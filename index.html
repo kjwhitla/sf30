@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Strikeforce30 v0.1.0 Alpha</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <header class="topbar" aria-label="Game status">
+      <div>
+        <div class="eyebrow">Strikeforce30</div>
+        <h1>Alpha Battlefield</h1>
+      </div>
+      <div class="version-chip">v0.1.0 ALPHA</div>
+      <div id="game-status" class="game-status"></div>
+    </header>
+
+    <main class="layout">
+      <aside id="player-a-panel" class="player-panel"></aside>
+      <section class="battlefield-shell" aria-label="Battlefield">
+        <div class="toolbar">
+          <button id="undo-button" type="button">Undo</button>
+          <button id="reset-button" type="button">Restart scenario</button>
+          <button id="debug-button" type="button">Debug</button>
+        </div>
+        <div id="battlefield" class="battlefield" tabindex="0"></div>
+        <div id="phase-guidance" class="phase-guidance" aria-live="polite"></div>
+      </section>
+      <aside id="player-b-panel" class="player-panel"></aside>
+    </main>
+
+    <section class="lower-grid">
+      <section id="context-panel" class="panel context-panel" aria-label="Action panel"></section>
+      <section class="panel log-panel" aria-label="Game log">
+        <div class="panel-heading"><h2>Game log</h2></div>
+        <ol id="game-log" class="game-log"></ol>
+      </section>
+    </section>
+
+    <dialog id="debug-dialog" class="debug-dialog">
+      <div class="panel-heading">
+        <h2>Debug state</h2>
+        <button id="debug-close" type="button">Close</button>
+      </div>
+      <pre id="debug-output"></pre>
+    </dialog>
+  </div>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
