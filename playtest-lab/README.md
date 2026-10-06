@@ -1,39 +1,36 @@
-# Strikeforce30 Tabletop Playtest v0.3
+# Strikeforce30 Tabletop Playtest v0.3.1
 
-This branch is the checkpoint for the rules-backed Strikeforce30 browser playtest.
+This branch tracks the rules-backed Strikeforce30 browser playtest checkpoint.
 
-## Layout correction
+## Tabletop layout
 
-v0.2 proved the rules engine could render in-browser, but its four software columns did not represent the physical tabletop well enough.
+- Territory cards form the horizontal center line.
+- Fatebound / Player 2 occupies the upper play zones.
+- Iron Wake / Player 1 occupies the lower play zones.
+- Strongholds bookend the battlefield.
+- VP / Reserves / Destroyed / Command stay on the table-edge rails.
+- Units physically sit beside the Territory they occupy.
+- READY units use canonical drag-and-drop Move/attack legality from `StrikeforceRulesEngine`.
 
-v0.3 changes the browser around the owner-supplied battlefield layout reference:
+## Hover inspection — v0.3.1
 
-- central horizontal Territory-card row
-- Fatebound / Player 2 play zones above the Territories
-- Iron Wake / Player 1 play zones below the Territories
-- Strongholds at opposite ends
-- VP / Reserves / Destroyed / Command on table-edge rails
-- unit cards/tokens physically located beside the Territory they occupy
-- owner-supplied unit art used where an exact asset exists
-- neutral labeled tokens used where art is not sourced
+The persistent information boxes have been removed from the physical pieces.
 
-## Drag-and-drop interaction
-
-READY units belonging to the player with priority are draggable.
-
-- Drop on a highlighted Territory or its play zone to execute a canonical Move.
-- Drop on a highlighted enemy unit to attack.
-- If more than one attack is legal for the same target, the drop opens a contextual choice rather than guessing between Shoot, Melee, or Charge.
-- Click interaction remains as a fallback.
-- The UI only highlights actions returned by the production `StrikeforceRulesEngine`.
+- Unit pieces keep only their art/token, health marker, and compact name.
+- Hover/focus opens a floating inspector with HEALTH, SHOOT, MELEE, DEFENSE, OC, MOVEMENT, activation state, location, and sourced ability text.
+- Territory cards lose the large bottom information overlay.
+- Hover/focus on a Territory opens its name, class, control, activation, and current occupants.
+- Drag/drop legality and game mutation are unchanged.
 
 ## Verification checkpoint
 
 - 195/195 automated tests passing
 - TypeScript check clean
-- Point of Domination initial render: 4 Territories / 8 units
-- packaged artifact SHA-256: `43404fd59680ad7fd50c9f5356b1e9a03754ff417c0856b41033f5603ed4929d`
+- synthetic deterministic smoke: 10,000 matches / 80,000 steps / `fnv1a32:194e0650`
+- production deterministic smoke: 1,000 matches / 9,000 steps / `fnv1a32:2ed91fb8`
+- production stops at sourced boundary RG-007
+- packaged artifact SHA-256: `1483606ad68cfc52bea48378e4f170b495dcb4eb450e9ee78498091e61aa2ecb`
 
 ## Important
 
-The original `main` branch still contains the older alpha shell and remains intentionally untouched while the playtest-lab work is isolated.
+The original `main` branch still contains the older alpha shell and remains intentionally untouched while playtest-lab work is isolated.
