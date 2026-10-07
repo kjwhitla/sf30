@@ -1,35 +1,28 @@
-# Strikeforce30 Tabletop Playtest v0.3.1
+# Strikeforce30 Tabletop Playtest v0.3.2
 
 This branch tracks the rules-backed Strikeforce30 browser playtest checkpoint.
 
-## Tabletop layout
+## Physical battlefield geometry
 
-- Territory cards form the horizontal center line.
-- Fatebound / Player 2 occupies the upper play zones.
-- Iron Wake / Player 1 occupies the lower play zones.
-- Strongholds bookend the battlefield.
-- VP / Reserves / Destroyed / Command stay on the table-edge rails.
-- Units physically sit beside the Territory they occupy.
-- READY units use canonical drag-and-drop Move/attack legality from `StrikeforceRulesEngine`.
+The browser now follows the sourced tabletop structure instead of treating units as small UI tokens:
 
-## Hover inspection — v0.3.1
-
-The persistent information boxes have been removed from the physical pieces.
-
-- Unit pieces keep only their art/token, health marker, and compact name.
-- Hover/focus opens a floating inspector with HEALTH, SHOOT, MELEE, DEFENSE, OC, MOVEMENT, activation state, location, and sourced ability text.
-- Territory cards lose the large bottom information overlay.
-- Hover/focus on a Territory opens its name, class, control, activation, and current occupants.
-- Drag/drop legality and game mutation are unchanged.
+- Battlefield is a line of Territory cards.
+- Every Territory has a separate Player Zone for each player.
+- Each Player Zone supports the sourced maximum of 3 friendly units.
+- Unit cards use the same 5:3 footprint and lane width as Territory cards.
+- Multiple unit cards in one Territory are a vertical overlapping stack.
+- Player 2 stacks upward away from the Territory; Player 1 stacks downward.
+- Hover raises the inspected card above its stack and opens the floating inspector.
+- READY units retain canonical drag-and-drop Move/attack legality from `StrikeforceRulesEngine`.
 
 ## Verification checkpoint
 
-- 195/195 automated tests passing
+- 196/196 automated tests passing
 - TypeScript check clean
 - synthetic deterministic smoke: 10,000 matches / 80,000 steps / `fnv1a32:194e0650`
 - production deterministic smoke: 1,000 matches / 9,000 steps / `fnv1a32:2ed91fb8`
 - production stops at sourced boundary RG-007
-- packaged artifact SHA-256: `1483606ad68cfc52bea48378e4f170b495dcb4eb450e9ee78498091e61aa2ecb`
+- packaged artifact SHA-256: `40d8bd65e9b7d2a2a8cf7475c9896ef8e0953b117d3e7c928035e3d58e62b60b`
 
 ## Important
 
