@@ -1,12 +1,13 @@
-# Runnable Playtest Lab Bootstrap
+# Verified runnable playtest payload
 
-The current GitHub connector cannot perform a normal filesystem `git push` of the complete local playtest-lab working tree.
+The runnable Strikeforce30 headless engine is transported on this branch as 35 small text chunks because the current GitHub connector cannot perform a normal filesystem git push from the build container.
 
-To keep GitHub as the handoff point, this branch includes the runnable source bundle at:
+`bootstrap.sh` will not extract anything unless the reconstructed payload matches both:
 
-`playtest-lab/bootstrap/strikeforce30-core.tgz`
+- byte size: `78,445`
+- SHA-256: `bc229b86057aa3f52a879dbc6fd67b4025228a0de498612290e9c7750785e69b`
 
-From the repository root run:
+Run from the repository root:
 
 ```bash
 git checkout playtest-lab-v0.2
@@ -18,6 +19,6 @@ npm test
 npm run smoke:synthetic
 ```
 
-The bootstrap expands the actual TypeScript engine, scripts, and tests directly into `playtest-lab/`.
+The bootstrap reconstructs normal `src/`, `test/`, `scripts/`, `package.json`, and `tsconfig.json` files in your checkout.
 
-This is an interim synchronization mechanism until the full source tree is committed normally to the repository.
+This runs the **headless rules/playtest engine**. It is not yet the clickable browser battlefield.
