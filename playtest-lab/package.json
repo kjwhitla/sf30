@@ -12,10 +12,10 @@
     "smoke:synthetic": "npm run build && node scripts/synthetic-smoke.mjs",
     "playtest": "npm run smoke:synthetic"
   },
-  "devDependencies": {
-    "typescript": "^5.8.3"
-  },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }
