@@ -1,0 +1,53 @@
+name: Normalize Engine Source
+
+on:
+  push:
+    branches:
+      - playtest-lab-v0.2
+    paths:
+      - .github/workflows/normalize-engine-source.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: playtest-lab-v0.2
+
+      - name: Restore checksum-verified engine
+        run: bash playtest-lab/bootstrap.sh
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify reconstructed engine
+        working-directory: playtest-lab
+        run: |
+          npm install
+          npm run check
+          npm test
+          npm run smoke:synthetic
+
+      - name: Commit normal engine source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add             playtest-lab/src             playtest-lab/test             playtest-lab/scripts             playtest-lab/tsconfig.json             playtest-lab/package.json             playtest-lab/package-lock.json
+
+          if git diff --cached --quiet; then
+            echo "No engine source changes to commit."
+            exit 0
+          fi
+
+          git commit -m "refactor: materialize verified engine source"
+          git push origin HEAD:playtest-lab-v0.2
