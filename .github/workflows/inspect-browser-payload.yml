@@ -17,22 +17,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Reconstruct browser archive
+      - name: Reconstruct and salvage browser archive
         run: |
-          set -euo pipefail
-          test "$(find playtest-lab/browser/bootstrap -name 'ui.b64.part-*' | wc -l)" -eq 6
-          cat playtest-lab/browser/bootstrap/ui.b64.part-* | base64 --decode > /tmp/strikeforce30-browser.tgz
-          gzip -t /tmp/strikeforce30-browser.tgz
-          tar -tzf /tmp/strikeforce30-browser.tgz | sed -n '1,160p'
+          set -u
+          PARTS=$(find playtest-lab/browser/bootstrap -name 'ui.b64.part-*' | sort)
+          echo "part count: $(printf '%s\n' "$PARTS" | wc -l)"
+          wc -c $PARTS
+          cat $PARTS | base64 --decode > /tmp/strikeforce30-browser.tgz
+          echo "decoded bytes: $(wc -c < /tmp/strikeforce30-browser.tgz)"
+          echo "=== archive listing (partial listing is useful) ==="
+          tar -tzvf /tmp/strikeforce30-browser.tgz > /tmp/browser-list.txt 2>/tmp/tar-list.err
+          LIST_STATUS=$?
+          cat /tmp/browser-list.txt
+          echo "tar listing status: $LIST_STATUS"
+          cat /tmp/tar-list.err || true
 
-      - name: Inspect extracted browser tree
-        run: |
-          set -euo pipefail
           mkdir -p /tmp/browser-payload
-          tar -xzf /tmp/strikeforce30-browser.tgz -C /tmp/browser-payload
-          echo "=== files ==="
-          find /tmp/browser-payload -maxdepth 4 -type f | sort | sed -n '1,220p'
-          echo "=== package manifests ==="
-          find /tmp/browser-payload -maxdepth 4 -name package.json -print -exec cat {} \;
+          tar -xzf /tmp/strikeforce30-browser.tgz -C /tmp/browser-payload 2>/tmp/tar-extract.err
+          EXTRACT_STATUS=$?
+          echo "tar extraction status: $EXTRACT_STATUS"
+          cat /tmp/tar-extract.err || true
+
+          echo "=== recovered files ==="
+          find /tmp/browser-payload -maxdepth 5 -type f | sort
+          echo "=== recovered package manifests ==="
+          find /tmp/browser-payload -maxdepth 5 -name package.json -print -exec cat {} \;
           echo "=== app version references ==="
-          grep -R "0.4.3\|APP_VERSION" /tmp/browser-payload --exclude-dir=node_modules | head -80 || true
+          grep -R "0.4.3\|APP_VERSION" /tmp/browser-payload --exclude-dir=node_modules | head -100 || true
+
+          # Fail intentionally if the supplied payload is incomplete.
+          gzip -t /tmp/strikeforce30-browser.tgz
