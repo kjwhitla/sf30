@@ -26,6 +26,7 @@ jobs:
           cat $PARTS | base64 --decode > /tmp/strikeforce30-browser.tgz
           echo "decoded bytes: $(wc -c < /tmp/strikeforce30-browser.tgz)"
           echo "=== archive listing (partial listing is useful) ==="
+          set +e
           tar -tzvf /tmp/strikeforce30-browser.tgz > /tmp/browser-list.txt 2>/tmp/tar-list.err
           LIST_STATUS=$?
           cat /tmp/browser-list.txt
@@ -35,6 +36,7 @@ jobs:
           mkdir -p /tmp/browser-payload
           tar -xzf /tmp/strikeforce30-browser.tgz -C /tmp/browser-payload 2>/tmp/tar-extract.err
           EXTRACT_STATUS=$?
+          set -e
           echo "tar extraction status: $EXTRACT_STATUS"
           cat /tmp/tar-extract.err || true
 
