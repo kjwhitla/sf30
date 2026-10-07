@@ -1,0 +1,38 @@
+name: Inspect Browser Payload
+
+on:
+  push:
+    branches:
+      - playtest-lab-v0.2
+    paths:
+      - .github/workflows/inspect-browser-payload.yml
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reconstruct browser archive
+        run: |
+          set -euo pipefail
+          test "$(find playtest-lab/browser/bootstrap -name 'ui.b64.part-*' | wc -l)" -eq 6
+          cat playtest-lab/browser/bootstrap/ui.b64.part-* | base64 --decode > /tmp/strikeforce30-browser.tgz
+          gzip -t /tmp/strikeforce30-browser.tgz
+          tar -tzf /tmp/strikeforce30-browser.tgz | sed -n '1,160p'
+
+      - name: Inspect extracted browser tree
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/browser-payload
+          tar -xzf /tmp/strikeforce30-browser.tgz -C /tmp/browser-payload
+          echo "=== files ==="
+          find /tmp/browser-payload -maxdepth 4 -type f | sort | sed -n '1,220p'
+          echo "=== package manifests ==="
+          find /tmp/browser-payload -maxdepth 4 -name package.json -print -exec cat {} \;
+          echo "=== app version references ==="
+          grep -R "0.4.3\|APP_VERSION" /tmp/browser-payload --exclude-dir=node_modules | head -80 || true
