@@ -29,7 +29,7 @@ This branch tracks the rules-backed Strikeforce30 browser playtest checkpoint.
 - synthetic deterministic smoke: 10,000 matches / 80,000 steps / `fnv1a32:194e0650`
 - production deterministic smoke: 1,000 matches / 9,000 steps / `fnv1a32:2ed91fb8`
 - production stops at sourced boundary RG-007
-- packaged ZIP SHA-256: `024e8f457f93e1a81da0faafac92df61339916dfa997ab0ae209655351160b35`
+- packaged ZIP SHA-256: `e9cd58e6315eb206de23ef56b8cc73d164ded543eac4a18569989522f43262ff`
 
 ## Important
 
