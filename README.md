@@ -29,7 +29,7 @@ npm run smoke:synthetic
 
 The verified TypeScript rules engine, tests, simulation tools, and lockfile are now committed as ordinary Git-tracked source and CI validates them directly from a fresh checkout.
 
-The browser client is still carried separately as a bootstrap payload and remains the next repository-normalization target.
+The browser client is still carried separately as a bootstrap payload, but the committed payload is currently truncated and not runnable to EOF. See `playtest-lab/browser/README.md` for the verified recovery boundary and required source recovery.
 
 The active repository milestone is **v0.5 — Repository Normalization + Scenario-Driven Architecture**.
 
