@@ -1,48 +1,34 @@
-# Strikeforce30 Tabletop Playtest v0.4.1
+# Strikeforce30 Tabletop Playtest v0.4.2
 
 This branch tracks the rules-backed Strikeforce30 browser playtest checkpoint.
 
-## Point of Domination Ping / Activate
+## Board combat presentation
 
-The current printed Point of Domination territory functions are now executable through the production rules engine.
+The browser playtest now keeps the tabletop readable while making combat feel physical.
 
-- `unit.ping` is a canonical Action Phase action.
-- A ready on-field unit Pings its current Territory and deactivates.
-- A Territory may be Pinged once per round; its activation resets at the next round start.
-- T1 / Iron Bastion: current controller gains +1 Command, capped at 3.
-- T2 / Battleground: current controller gains +1 VP.
-- T3 / Wasteland: no executable Ping effect.
-- T4 / Void Gate: current controller gains +1 Command, capped at 3.
-- The browser exposes **Ping / Activate** only when projected legal by `StrikeforceRulesEngine`.
-- Selecting Ping makes the legal Territory glow; clicking that Territory commits the action.
-- Other candidate Territory-library Ping mechanics remain gated rather than inferred.
-
-## Physical score / resource markers
-
-The browser now includes transparent tabletop-style presentation assets:
-
-- orange Territory/general VP markers (1 / 3 / 5)
-- red Kill VP marker
-- Command marker
-- Ping / Activate marker
-
-The side rails distinguish total VP, Kill VP, Command, Reserves, and Destroyed cards. The token art is presentation-only; rules/state remain authoritative.
-
-## Telemetry
-
-`territory.pinged` is included in readable event logging and telemetry, including Ping count, Command gained through Ping, and VP gained through Ping.
+- Fatebound cards are upright in the browser operator view for now.
+- Shoot resolution: attacker recoil/wiggle → projectile tracer → impact burst + target wiggle → supplied Fate Dice resolution → physical wound-token placement.
+- Melee resolution: lunge/impact reaction → supplied Fate Dice resolution → wound-token placement.
+- Input stays locked until all visual resolution steps finish, so the next player cannot act early.
+- Every point of combat damage adds one persistent **-1 wound token** to the card; the token count follows canonical `unit.wounds`.
+- Wound tokens reduce HEALTH, SHOOT, MELEE, and DEFENSE through the existing rules engine exactly as before.
+- Deactivation is represented with a physical card token instead of relying only on opacity.
+- Temporary stat modifiers render as card tokens (for example `+2 DEF` for Dig In).
+- A Territory that has already been Pinged shows the physical Ping / Activate token.
+- The token layer is presentation only; authoritative legality and state mutation remain in `StrikeforceRulesEngine`.
 
 ## Verification checkpoint
 
-- local milestone commit: `bd540ac`
-- 214/214 automated tests passing
+- local milestone commit: `b398eac`
+- 215/215 automated tests passing
 - TypeScript check clean
 - synthetic deterministic smoke: 10,000 matches / 80,000 steps / `fnv1a32:194e0650`
 - production deterministic smoke: 1,000 matches / 9,000 steps / `fnv1a32:2ed91fb8`
 - production still stops at sourced boundary RG-007
-- final ZIP was re-extracted; tests/check passed; server health, browser v0.4.1 asset, Kill token asset, and initial T4 Ping actions were verified from the extracted package
-- packaged ZIP SHA-256: `feec61950abecec9d35d97bd75891486cc8f3401129771d25c97e89837cc02cd`
+- final ZIP was re-extracted; 215 tests and TypeScript check passed from the extracted artifact
+- extracted package server verified via `/health`, v0.4.2 browser asset, and the wound-token asset
+- packaged ZIP SHA-256: `6068b8599a53f9c78fb6785bff36df390490c5b758b63b3520eaf13d848c5ace`
 
 ## Important
 
-The original `main` branch still contains the older alpha shell and remains intentionally untouched while playtest-lab work is isolated. This GitHub branch remains a checkpoint record; the full runnable v0.4.1 source tree has not been pushed here yet.
+The original `main` branch still contains the older alpha shell and remains intentionally untouched while playtest-lab work is isolated. This GitHub branch remains a checkpoint record; the full runnable v0.4.2 source tree has not been pushed here yet.
