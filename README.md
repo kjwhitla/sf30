@@ -18,26 +18,25 @@ Strikeforce30 is currently developed and verified on the `playtest-lab-v0.2` bra
 ```bash
 git checkout playtest-lab-v0.2
 git pull origin playtest-lab-v0.2
-bash playtest-lab/bootstrap.sh
 cd playtest-lab
-npm install
-npm test
+npm ci
 npm run check
+npm test
 npm run smoke:synthetic
 ```
 
-The bootstrap payload is checksum-verified before extraction. See `playtest-lab/BOOTSTRAP.md` for the current transport details.
-
 ## Repository state
 
-The playable rules engine and browser have advanced beyond the legacy root shell, but the complete runnable source tree is still represented on this branch through verified bootstrap payloads rather than ordinary Git-tracked source files.
+The verified TypeScript rules engine, tests, simulation tools, and lockfile are now committed as ordinary Git-tracked source and CI validates them directly from a fresh checkout.
 
-That transport is temporary. The next repository milestone is **v0.5 — Repository Normalization + Scenario-Driven Architecture**.
+The browser client is still carried separately as a bootstrap payload and remains the next repository-normalization target.
+
+The active repository milestone is **v0.5 — Repository Normalization + Scenario-Driven Architecture**.
 
 ### v0.5 exit criteria
 
-1. Commit the normal TypeScript engine, tests, browser source, and assets directly to Git.
-2. Remove the Base64 bootstrap transport after the normal source tree is independently verified.
+1. Commit the browser source and assets directly to Git; the engine source is now normalized.
+2. Remove remaining browser bootstrap transport after the normal browser source tree is independently verified.
 3. Make the repository runnable from a fresh clone through one obvious developer path.
 4. Keep rules legality and state mutation exclusively in the canonical engine.
 5. Represent scenario-specific setup through declarative scenario/content data wherever possible.
