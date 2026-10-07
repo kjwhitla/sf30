@@ -1,32 +1,48 @@
-# Strikeforce30 Tabletop Playtest v0.4.0
+# Strikeforce30 Tabletop Playtest v0.4.1
 
 This branch tracks the rules-backed Strikeforce30 browser playtest checkpoint.
 
-## Browser telemetry + event logging
+## Point of Domination Ping / Activate
 
-The tabletop now exposes the canonical append-only engine event stream as a playtest instrument.
+The current printed Point of Domination territory functions are now executable through the production rules engine.
 
-- **Event log**: readable event summaries in exact engine sequence.
-- Filters: **Combat**, **Movement**, **Gameplay**, and **System**.
-- Every row expands to the untouched raw event envelope/payload.
-- **Telemetry**: session metrics derived from canonical events/state, including player decisions, movement, Shoot, Melee, Charge success, damage, destroyed units, Fate Dice, final VP/Command, unit disposition, and Territory control.
-- **Download session JSON**: telemetry + canonical events + action history + final GameState.
-- **Download events JSONL**: one normalized record per canonical event.
-- **Copy JSONL**: clipboard handoff for analysis workflows.
-- RG-007 remains explicit and objective VP is not fabricated.
-- Telemetry is observational only; legality/state mutation remain exclusively in `StrikeforceRulesEngine`.
+- `unit.ping` is a canonical Action Phase action.
+- A ready on-field unit Pings its current Territory and deactivates.
+- A Territory may be Pinged once per round; its activation resets at the next round start.
+- T1 / Iron Bastion: current controller gains +1 Command, capped at 3.
+- T2 / Battleground: current controller gains +1 VP.
+- T3 / Wasteland: no executable Ping effect.
+- T4 / Void Gate: current controller gains +1 Command, capped at 3.
+- The browser exposes **Ping / Activate** only when projected legal by `StrikeforceRulesEngine`.
+- Selecting Ping makes the legal Territory glow; clicking that Territory commits the action.
+- Other candidate Territory-library Ping mechanics remain gated rather than inferred.
+
+## Physical score / resource markers
+
+The browser now includes transparent tabletop-style presentation assets:
+
+- orange Territory/general VP markers (1 / 3 / 5)
+- red Kill VP marker
+- Command marker
+- Ping / Activate marker
+
+The side rails distinguish total VP, Kill VP, Command, Reserves, and Destroyed cards. The token art is presentation-only; rules/state remain authoritative.
+
+## Telemetry
+
+`territory.pinged` is included in readable event logging and telemetry, including Ping count, Command gained through Ping, and VP gained through Ping.
 
 ## Verification checkpoint
 
-- local milestone commit: `6e2296b`
-- 209/209 automated tests passing
+- local milestone commit: `bd540ac`
+- 214/214 automated tests passing
 - TypeScript check clean
 - synthetic deterministic smoke: 10,000 matches / 80,000 steps / `fnv1a32:194e0650`
 - production deterministic smoke: 1,000 matches / 9,000 steps / `fnv1a32:2ed91fb8`
-- production stops at sourced boundary RG-007
-- final packaged artifact was re-extracted and verified: tests pass, server health responds, telemetry module serves
-- packaged ZIP SHA-256: `7cca15ae8332ca337640306efe706b32d590ca1cd924ff09567832a4d2f0f5e4`
+- production still stops at sourced boundary RG-007
+- final ZIP was re-extracted; tests/check passed; server health, browser v0.4.1 asset, Kill token asset, and initial T4 Ping actions were verified from the extracted package
+- packaged ZIP SHA-256: `feec61950abecec9d35d97bd75891486cc8f3401129771d25c97e89837cc02cd`
 
 ## Important
 
-The original `main` branch still contains the older alpha shell and remains intentionally untouched while playtest-lab work is isolated. This GitHub branch is still a checkpoint record; the full runnable v0.4.0 source tree has not been pushed here yet.
+The original `main` branch still contains the older alpha shell and remains intentionally untouched while playtest-lab work is isolated. This GitHub branch remains a checkpoint record; the full runnable v0.4.1 source tree has not been pushed here yet.
