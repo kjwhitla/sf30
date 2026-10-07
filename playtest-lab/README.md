@@ -1,37 +1,38 @@
-# Strikeforce30 Tabletop Playtest v0.3.4
+# Strikeforce30 Tabletop Playtest v0.3.6
 
 This branch tracks the rules-backed Strikeforce30 browser playtest checkpoint.
 
-## Fatebound visual pass
+## Melee flow correction
 
-Owner-supplied full-card art is now mapped to the matching canonical Live Stats unit definitions:
+The browser no longer exposes automatic Melee cursor transitions as player decisions.
 
-- Gate Baron
-- Immortals
-- Gatewings
-- The Hallowed
-- Silencers
-- Spikemites
+- Declaring Melee / successful Charge automatically resolves the initiator strike.
+- A surviving defender pauses only for the sourced Fight back / Retreat choice.
+- Fight back automatically resolves retaliation and, if both units survive, the next initiator strike.
+- The UI shows Exchange X of Y so the two-exchange sequence is explicit rather than appearing to loop.
+- Undo groups automatic cursor steps with the real player choice that caused them.
 
-The Point of Domination baseline therefore renders all four Fatebound starting units with their actual supplied cards. The browser does not derive rules from card pixels; canonical legality and state mutation remain in StrikeforceRulesEngine.
+## Scouts On-Death
 
-## Interaction / resolution retained
+The owner-supplied Scouts card and playtest source establish:
 
-- Action selection is exclusive: Move/Shoot/Melee/Charge replace prior highlights.
-- Legal battlefield cards glow and are selected spatially.
-- Resolution locks input while supplied Fate Dice animate and settle on the exact physical faces rolled.
-- Unit cards match Territory-card footprint and stack vertically in Player Zones.
-- Hover inspection remains available for runtime state.
+- Roll 1FD immediately when Scouts are destroyed.
+- On a 2, deal 1 DMG to an enemy unit in THIS Territory.
+- Troop destruction still routes Scouts to Reserves and awards the printed/default destroyed VP.
+
+The engine now supports the roll and a serializable target-choice state. If the roll is 2, only legal enemy cards in the death Territory glow and the Scouts owner chooses one. The supplied Fate Die faces are used for the animation.
+
+The exact reported seed-3030 sequence through event #12 is a regression test. Immortals' Fight Back destroys Scouts, Scouts' On-Death resolves, Melee terminates because a combatant was destroyed, and normal priority resumes.
 
 ## Verification checkpoint
 
-- local milestone commit: `84c8e72`
-- 198/198 automated tests passing
+- local milestone commit: `c3ef3c1`
+- 205/205 automated tests passing
 - TypeScript check clean
 - synthetic deterministic smoke: 10,000 matches / 80,000 steps / `fnv1a32:194e0650`
-- production deterministic smoke: 1,000 matches / 9,000 steps / `fnv1a32:2ed91fb8`
-- production stops at sourced boundary RG-007
-- packaged ZIP SHA-256: `e155c73bcb804d55577355ceed59119a53b1b184e2bea36d49e6ae9273380afb`
+- production deterministic smoke: 10,000 matches / 90,000 steps / `fnv1a32:185470c7`
+- production still stops at sourced boundary RG-007
+- packaged ZIP SHA-256: `f27497e6c3b4c5bd000af730b1d8db9061c2d0bb7d1211d5623505420d5d9d06`
 
 ## Important
 
