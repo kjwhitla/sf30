@@ -1,0 +1,21 @@
+{
+  "name": "strikeforce30-playtest-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless, deterministic Strikeforce30 rules and automated playtest foundation.",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc -p tsconfig.json",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "smoke:synthetic": "npm run build && node scripts/synthetic-smoke.mjs",
+    "playtest": "npm run smoke:synthetic"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
